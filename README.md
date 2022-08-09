@@ -1,5 +1,14 @@
-# Project exclude paths
-/target/
+# Job4j_cinema
 
-.idea
-jog4j_cinema.iml
+Данное приложение иллюстрирует покупку билетов в кинотеатр.
+
+Стек технологий: 
+* Spring boot;
+* Thymeleaf;
+* Bootstrap;
+* JDBC;
+* Liquibase;
+* H2 Database;
+* Mockito;
+* Junit;
+* Hamcrest.
