@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link href="../static/styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet" />
+    <head>
+        <link rel="shortcut icon" href="styles/img/free-icon-cinema-2809590.png" type="image/png">
+    </head>
+    <title>Cinema</title>
+  </head>
+  <body>
+    <div class="head">
+        <div class="container">
+            <div class="inner-nav">
+                <div class="header-cell">
+                    <a th:href="@{/getIndex}" class="header-logo">
+                        <span class="logo_text">Киноафиша</span>
+                    </a>
+                </div>
+                <div class="account-button">
+                    <a class="acc" th:if="${user.username == 'Account'}" th:href="@{/loginPage}">
+                        <span th:text="${user.username}"></span>
+                    </a>
+                    <a class="acc" th:if="${user.username != 'Account'}" th:href="@{/logout}">
+                        <span th:text="${user.username}"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="featured" id="featured-id" th:object="${film}">
+            <div class="container">
+                <div class="film-box-session">
+                <input type="hidden" name="id" th:field="*{id}"/>
+                    <div class="box">
+                        <img class="image-background" name="img" id="img" th:src="@{|/images/${film.id}|}">
+                        <h3 class="box-title" name="name" id="name" th:text="*{name}"></h3>
+                        <p class="box-content" name="description" id="description" th:text="*{description}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <footer class="copyright-session">
+        <div class="container">
+            <div class="copyright-text-session">
+                © 2022 Brand All Rights Reserved.
+            </div>
+
+        </div>
+    </footer>
+  </body>
+</html>

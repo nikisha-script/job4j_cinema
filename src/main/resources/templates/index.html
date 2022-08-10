@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link href="../static/styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet" />
+    <head>
+        <link rel="shortcut icon" href="styles/img/free-icon-cinema-2809590.png" type="image/png">
+    </head>
+    <script type="text/javascript" th:src="@{/scripts/actions.js}"></script>
+    <title>Cinema</title>
+  </head>
+  <body>
+    <div class="head">
+        <div class="container">
+            <div class="inner-nav">
+                <a th:href="${index}" class="logo">
+                    <img class="img-logo" src="styles/img/logo.svg" alt="">
+                </a>
+                <div class="header-cell">
+                    <a th:href="${index}" class="header-logo">
+                        <span class="logo_text">Киноафиша</span>
+                    </a>
+                </div>
+                <div class="account-button">
+                    <a class="acc" th:if="${user.username == 'Account'}" th:href="@{/loginPage}">
+                        <span th:text="${user.username}"></span>
+                    </a>
+                    <a class="acc" th:if="${user.username != 'Account'}" th:href="@{/logout}">
+                        <span th:text="${user.username}"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navigation">
+        <div class="container">
+            <ul class="nav-menu">
+                <li class="menu-item">
+                    <a href="index" class="link-item">Home</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="link-item">Account</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="link-item" th:onclick="demo()">Premieres</a>
+                </li>
+            
+            </ul>
+        </div>
+    </nav>
+    <div class="intro">
+        <div class="container">
+            <h1 class="main-offer-title">
+                <span class="big-title">movie poster</span>
+                 CHOICE&nbsp;of movie for every 
+                 <span class="pink">taste</span>
+            </h1>
+        </div>
+    </div>
+    <div class="featured" id="featured-id">
+        <div class="container">
+            <h2 class="featured-h2">Фильмы в прокате</h2>
+            <div class="film-box">
+                <div class="box" th:each="film: ${films}">
+                    <img class="image-background" th:src="@{|/images/${film.id}|}">
+                    <h3 class="box-title" th:text="${film.name}"></h3>
+                    <p class="box-content" th:text="${film.description}"></p>
+                    <a class="btn-ticket" th:href="@{|/session/${film.id}|}">Купить билет</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <footer class="copyright">
+        <div class="container">
+            <div class="copyright-text">
+                © 2022 Brand All Rights Reserved.
+                <div class="social">
+                    <a href="#" class="social-item">
+                        <img src="styles/img/twitter.png" alt="">
+                    </a>
+                    <a href="#" class="social-item">
+                        <img src="styles/img/facebook.png" alt="">
+                    </a>
+                    <a href="#" class="social-item">
+                        <img src="styles/img/google.png" alt="">
+                    </a>
+                    <a href="#" class="social-item">
+                        <img src="styles/img/linkedin.png" alt="">
+                    </a>
+                    <a href="#" class="social-item">
+                        <img src="styles/img/p.png" alt="">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+  </body>
+</html>   
