@@ -3,10 +3,7 @@ package ru.job4j.cinema.controller;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.cinema.filter.PasswordEncoder;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.services.UserService;
@@ -59,4 +56,5 @@ public class UserController {
         Optional<User> regUser = store.add(user);
         return "redirect:/index";
     }
+
 }

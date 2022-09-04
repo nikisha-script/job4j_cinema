@@ -34,11 +34,45 @@
     <div class="featured" id="featured-id" th:object="${film}">
             <div class="container">
                 <div class="film-box-session">
-                <input type="hidden" name="id" th:field="*{id}"/>
                     <div class="box">
                         <img class="image-background" name="img" id="img" th:src="@{|/images/${film.id}|}">
                         <h3 class="box-title" name="name" id="name" th:text="*{name}"></h3>
                         <p class="box-content" name="description" id="description" th:text="*{description}"></p>
+                          <form th:action="@{/buy}" method="GET">
+                          <input type="hidden" name="id" th:field="${film.id}"/>
+                          <input type="hidden" name="username" th:field="${user.username}"/>
+                                <div class="row pt-3">
+                                    <table class="table table-bordered border-primary">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Ряд</th>
+                                            <th scope="col">1</th>
+                                            <th scope="col">2</th>
+                                            <th scope="col">3</th>
+                                            <th scope="col">4</th>
+                                            <th scope="col">5</th>
+                                            <th scope="col">6</th>
+                                            <th scope="col">7</th>
+                                            <th scope="col">8</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row" name="row">1</th>
+                                            <td><input type="radio" name="place" value="1"></td>
+                                            <td><input type="radio" name="place" value="2"></td>
+                                            <td><input type="radio" name="place" value="3"></td>
+                                            <td><input type="radio" name="place" value="4"></td>
+                                            <td><input type="radio" name="place" value="5"></td>
+                                            <td><input type="radio" name="place" value="6"></td>
+                                            <td><input type="radio" name="place" value="7"></td>
+                                            <td><input type="radio" name="place" value="8"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="submit">Оплатить</button>
+                           </form>
                     </div>
                 </div>
             </div>

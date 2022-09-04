@@ -24,4 +24,8 @@ public class UserService {
     public Optional<User> findUser(User user) {
         return store.findUser(user);
     }
+
+    public User findUserByName(String username) {
+        return store.findUserByName(username);
+    }
 }

@@ -5,11 +5,6 @@ create table users (
     phone varchar not null
 );
 
-create table sessions (
-  id serial primary key,
-  name text
-);
-
 create table films (
     id serial primary key,
     name text,
@@ -19,9 +14,7 @@ create table films (
 
 create table ticket (
     id serial primary key,
-    pos_row int not null,
-    cell int not null,
-    session_id int not null references sessions(id),
-    user_id int not null references users(id),
-    film_id int not null references films(id)
+    pos_row int not null unique,
+    user_id int not null references users(id) unique,
+    film_id int not null references films(id) unique
 );

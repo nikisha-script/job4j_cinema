@@ -202,13 +202,17 @@ a {
 
 .btn-ticket:hover {
     padding: 3px;
-    border-color: 1px solid #000;
+    background-color: #f16d7f;
+}
+
+.image-background:hover {
+    padding: 3px;
 }
 
 .box {
     width: 33.33333%;
     height: 364px;
-    margin-top:70px;
+    margin-top:65px;
     padding: 15px;
 }
 
@@ -283,3 +287,19 @@ a {
     display: flex;
     justify-content: center;
 }
+
+.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+.table th, .table td {
+    border: 1px solid #888;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    cursor: pointer;
+}
+
+

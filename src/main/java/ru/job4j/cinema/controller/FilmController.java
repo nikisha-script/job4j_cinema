@@ -57,5 +57,4 @@ public class FilmController {
                 .body(new ByteArrayResource(film.getImg()));
     }
 
-
 }

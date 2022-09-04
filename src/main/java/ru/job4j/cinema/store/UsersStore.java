@@ -63,4 +63,24 @@ public class UsersStore {
         }
         return res;
     }
+
+    public User findUserByName(String username) {
+        User res = new User();
+        try (Connection connection = pool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users where username = ?")) {
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    res.setId(resultSet.getInt("id"));
+                    res.setUsername(resultSet.getString("username"));
+                    res.setEmail(resultSet.getString("email"));
+                    res.setPhone(resultSet.getString("phone"));
+                    res.setPassword(resultSet.getString("password"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 }
