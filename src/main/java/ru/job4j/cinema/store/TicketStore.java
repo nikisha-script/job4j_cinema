@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @ThreadSafe
@@ -61,19 +62,26 @@ public class TicketStore {
         return tickets;
     }
 
-    public List<Session> findAll() {
-        List<Session> result = new ArrayList<>();
+    public Optional<Ticket> findTicketByRowPosition(int row, int id) {
+        Optional<Ticket> ticket = Optional.empty();
+        Ticket temp = new Ticket();
         try (Connection connection = pool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "select * from session");
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                result.add(new Session(resultSet.getInt("id"),
-                        resultSet.getInt("pos")));
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from ticket where pos_row = ? and film_id = ?")) {
+            preparedStatement.setInt(1, row);
+            preparedStatement.setInt(2, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    temp.setId(resultSet.getInt("id"));
+                    temp.setId(resultSet.getInt("pos_row"));
+                    temp.setId(resultSet.getInt("user_id"));
+                    temp.setId(resultSet.getInt("film_id"));
+                }
             }
+            ticket = Optional.of(temp);
         } catch (SQLException e) {
-            log.error("SQLException in findAll method", e);
+            log.error("SQLException in method findTicketByRowPosition", e);
         }
-        return result;
+        return ticket;
     }
+
 }

@@ -16,5 +16,5 @@ create table ticket (
     id serial primary key,
     pos_row int not null unique,
     user_id int not null references users(id) unique,
-    film_id int not null references films(id) unique
+    film_id int not null references films(id)
 );

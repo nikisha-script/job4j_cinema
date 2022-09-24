@@ -6,6 +6,7 @@ import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.store.TicketStore;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @ThreadSafe
@@ -25,7 +26,7 @@ public class TicketService {
         return store.findTicketsByUserId(id);
     }
 
-    public List<Session> findAll() {
-        return store.findAll();
+    public Optional<Ticket> findTicketByRowPosition(int row, int id) {
+        return store.findTicketByRowPosition(row, id);
     }
 }
