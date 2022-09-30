@@ -29,7 +29,7 @@ public class TicketService {
         return store.findTicketsByUserId(id);
     }
 
-    public Optional<Ticket> findTicketByRowPosition(int row,int cell, int id) {
+    public Optional<Ticket> findTicketByRowPosition(int row, int cell, int id) {
         return store.findTicketByRowPosition(row, cell, id);
     }
 
