@@ -13,19 +13,22 @@ public class Ticket {
 
     private int id;
     private int row;
+    private int cell;
     private int userId;
     private int filmId;
 
-    public Ticket(int id, int row, int userId, int filmId) {
+    public Ticket(int id, int row, int cell, int userId, int filmId) {
         this.id = id;
         this.row = row;
         this.userId = userId;
         this.filmId = filmId;
+        this.cell = cell;
     }
 
-    public Ticket(int row, int userId, int filmId) {
+    public Ticket(int row, int cell, int userId, int filmId) {
         this.row = row;
         this.userId = userId;
         this.filmId = filmId;
+        this.cell = cell;
     }
 }

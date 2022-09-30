@@ -27,11 +27,12 @@ public class TicketStore {
 
     public void save(Ticket ticket) {
         try (Connection connection = pool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id) values (?, ?, ?)",
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) values (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setInt(1, ticket.getRow());
                 preparedStatement.setInt(2, ticket.getUserId());
                 preparedStatement.setInt(3, ticket.getFilmId());
+                preparedStatement.setInt(4, ticket.getCell());
                 preparedStatement.execute();
                 try (ResultSet id = preparedStatement.getGeneratedKeys()) {
                     if (id.next()) {
@@ -62,17 +63,19 @@ public class TicketStore {
         return tickets;
     }
 
-    public Optional<Ticket> findTicketByRowPosition(int row, int id) {
+    public Optional<Ticket> findTicketByRowPosition(int row, int cell, int id) {
         Optional<Ticket> ticket = Optional.empty();
         Ticket temp = new Ticket();
         try (Connection connection = pool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from ticket where pos_row = ? and film_id = ?")) {
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from ticket where pos_row = ? and cell = ? and film_id = ?")) {
             preparedStatement.setInt(1, row);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(2, cell);
+            preparedStatement.setInt(3, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     temp.setId(resultSet.getInt("id"));
                     temp.setId(resultSet.getInt("pos_row"));
+                    temp.setId(resultSet.getInt("cell"));
                     temp.setId(resultSet.getInt("user_id"));
                     temp.setId(resultSet.getInt("film_id"));
                 }

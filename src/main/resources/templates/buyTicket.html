@@ -31,34 +31,33 @@
             </div>
         </div>
     </div>
-    <div class="featured" id="featured-id" th:object="${film}">
+ <div class="featured" id="featured-id" th:object="${ticket}">
             <div class="container">
                 <div class="film-box-session">
                     <div class="box">
-                        <img class="image-background" name="img" id="img" th:src="@{|/images/${film.id}|}">
-                        <h3 class="box-title" name="name" id="name" th:text="*{name}"></h3>
-                        <p class="box-content" name="description" id="description" th:text="*{description}"></p>
-                          <form th:action="@{/selectTicket}" method="GET">
+                          <form th:action="@{/buyTicket}" method="POST">
                                <input type="hidden" name="id" th:field="${film.id}"/>
                                <input type="hidden" name="username" th:field="${user.username}"/>
+                               <input type="hidden" name="cell" th:field="${ticket.cell}"/>
+                               <input type="hidden" name="row" th:field="${ticket.row}"/>
+                                <div class="form-group">
+                                     <label th:text="${film.name}"></label>
+                                </div>
                               <div class="form-group">
-                                  <label for="ticket.row">Ряд</label>
-                                  <select class="form-control" id="ticket.row" name="row">
-                                      <option th:each="row : ${rows}" th:text="${row}"></option>
-                                  </select>
+                                  <label for="ticket.cell">Ряд</label>
+                                  <p name="cell" th:text="${ticket.cell}"></p>
                               </div>
                               <div class="form-group">
-                                  <label for="ticket.cell">Место</label>
-                                  <select class="form-control" id="ticket.cell" name="cell">
-                                      <option th:each="cell : ${cells}" th:text="${cell}"></option>
-                                  </select>
+                                  <label for="ticket.row">Место</label>
+                                  <p name="row" th:text="${ticket.row}"></p>
                               </div>
-                              <button type="submit" class="btn btn-outline-primary">Выбор</button>
+                              <button type="submit" class="btn btn-outline-primary">Купить</button>
                           </form>
+                          <a th:href="@{/getIndex}"><button class="btn btn-outline-primary">Отмена</button></a>
                     </div>
                 </div>
             </div>
-    </div>
+ </div>
 
     <footer class="copyright-session">
         <div class="container">

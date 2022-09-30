@@ -1,10 +1,13 @@
 package ru.job4j.cinema.filter;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
 public class AuthFilter implements Filter {
 
     @Override
@@ -14,7 +17,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         String uri = req.getRequestURI();
-        if (uri.endsWith("loginPage") || uri.endsWith("login")) {
+        if (uri.endsWith("loginPage") || uri.endsWith("login") || uri.endsWith("reg")) {
             filterChain.doFilter(req, res);
             return;
         }

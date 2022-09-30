@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.services.FilmService;
 import org.springframework.core.io.Resource;
+import ru.job4j.cinema.services.TicketService;
 import ru.job4j.cinema.utils.SessionUser;
 
 import javax.servlet.http.HttpSession;
@@ -21,9 +22,11 @@ import javax.servlet.http.HttpSession;
 public class FilmController {
 
     private FilmService service;
+    private TicketService ticketService;
 
-    public FilmController(FilmService service) {
+    public FilmController(FilmService service, TicketService ticketService) {
         this.service = service;
+        this.ticketService = ticketService;
     }
 
     @GetMapping("/index")
@@ -37,6 +40,8 @@ public class FilmController {
     public String getSession(Model model, @PathVariable("id") Integer id, HttpSession session) {
         SessionUser.getSession(model, session);
         model.addAttribute("film", service.findById(id));
+        model.addAttribute("rows", ticketService.rowsList());
+        model.addAttribute("cells", ticketService.cellsList());
         return "/session";
     }
 
