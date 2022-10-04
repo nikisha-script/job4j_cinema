@@ -21,8 +21,8 @@ public class TicketService {
         this.store = store;
     }
 
-    public void save(Ticket ticket) {
-        store.save(ticket);
+    public Optional<Ticket> save(Ticket ticket) {
+        return store.save(ticket);
     }
 
     public List<Ticket> findTicketsByUserId(int id) {

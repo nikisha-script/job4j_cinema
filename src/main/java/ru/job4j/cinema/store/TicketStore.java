@@ -25,7 +25,8 @@ public class TicketStore {
         this.pool = pool;
     }
 
-    public void save(Ticket ticket) {
+    public Optional<Ticket> save(Ticket ticket) {
+        Optional<Ticket> rsl = Optional.empty();
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) values (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -39,9 +40,12 @@ public class TicketStore {
                         ticket.setId(id.getInt(1));
                     }
                 }
+                rsl = Optional.of(ticket);
         } catch (SQLException e) {
             log.error("SQLException in method buyTicket", e);
         }
+
+        return rsl;
     }
 
     public List<Ticket> findTicketsByUserId(int id) {

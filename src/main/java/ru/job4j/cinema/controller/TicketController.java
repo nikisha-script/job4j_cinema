@@ -55,6 +55,7 @@ public class TicketController {
                       @RequestParam("row") Integer row,
                       Model model,
                       HttpSession session) {
+        StringBuilder response = new StringBuilder();
         SessionUser.getSession(model, session);
         User user = userService.findUserByName(username);
         Ticket ticket = new Ticket(row, cell, user.getId(), id);
@@ -62,11 +63,16 @@ public class TicketController {
                 ticket.getCell(),
                 ticket.getFilmId());
         if (temp.get().getId() == 0) {
-            ticketService.save(ticket);
-            return "/successfully";
+            Optional<Ticket> rsl = ticketService.save(ticket);
+            if (rsl.isPresent()) {
+                response.append("/successfully");
+            } else {
+                response.append("redirect:/wrongticket?fail=true");
+            }
         } else {
-            return "redirect:/wrongticket?fail=true";
+            response.append("redirect:/wrongticket?fail=true");
         }
+        return response.toString();
     }
 
     @GetMapping("/wrongticket")
