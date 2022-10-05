@@ -1,10 +1,10 @@
 package ru.job4j.cinema.store;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cinema.filter.PasswordEncoder;
 import ru.job4j.cinema.model.User;
 
 import java.sql.Connection;
@@ -16,13 +16,10 @@ import java.util.Optional;
 @Repository
 @ThreadSafe
 @Slf4j
-public class UsersStore {
+@RequiredArgsConstructor
+public class UserStore {
 
-    private BasicDataSource pool;
-
-    public UsersStore(BasicDataSource pool) {
-        this.pool = pool;
-    }
+    private final BasicDataSource pool;
 
     public Optional<User> add(User user) {
         Optional<User> res = Optional.empty();
@@ -33,7 +30,7 @@ public class UsersStore {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhone());
-            statement.setString(4, PasswordEncoder.passwordOfDef(user.getPassword()));
+            statement.setString(4, user.getPassword());
             statement.execute();
             try (ResultSet id = statement.getGeneratedKeys()) {
                 if (id.next()) {

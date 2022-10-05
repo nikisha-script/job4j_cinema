@@ -1,5 +1,6 @@
 package ru.job4j.cinema.store;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -17,13 +18,11 @@ import java.util.Optional;
 @Repository
 @ThreadSafe
 @Slf4j
+@RequiredArgsConstructor
 public class TicketStore {
 
-    private BasicDataSource pool;
+    private final BasicDataSource pool;
 
-    public TicketStore(BasicDataSource pool) {
-        this.pool = pool;
-    }
 
     public Optional<Ticket> save(Ticket ticket) {
         Optional<Ticket> rsl = Optional.empty();
@@ -57,6 +56,7 @@ public class TicketStore {
                 while (rs.next()) {
                     tickets.add(new Ticket(rs.getInt("id"),
                             rs.getInt("pos_row"),
+                            rs.getInt("cell"),
                             rs.getInt("user_id"),
                             rs.getInt("film_id")));
                 }
@@ -67,24 +67,24 @@ public class TicketStore {
         return tickets;
     }
 
-    public Optional<Ticket> findTicketByRowPosition(int row, int cell, int id) {
+    public Optional<Ticket> findTicketByRowPosition(int row, int cell, int filmId) {
         Optional<Ticket> ticket = Optional.empty();
-        Ticket temp = new Ticket();
         try (Connection connection = pool.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("select * from ticket where pos_row = ? and cell = ? and film_id = ?")) {
             preparedStatement.setInt(1, row);
             preparedStatement.setInt(2, cell);
-            preparedStatement.setInt(3, id);
+            preparedStatement.setInt(3, filmId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
+                if (resultSet.next()) {
+                    Ticket temp = new Ticket();
                     temp.setId(resultSet.getInt("id"));
                     temp.setId(resultSet.getInt("pos_row"));
                     temp.setId(resultSet.getInt("cell"));
                     temp.setId(resultSet.getInt("user_id"));
                     temp.setId(resultSet.getInt("film_id"));
+                    ticket = Optional.of(temp);
                 }
             }
-            ticket = Optional.of(temp);
         } catch (SQLException e) {
             log.error("SQLException in method findTicketByRowPosition", e);
         }

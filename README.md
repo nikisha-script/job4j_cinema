@@ -3,15 +3,27 @@
 Данное приложение иллюстрирует покупку билетов в кинотеатр.
 
 Стек технологий: 
-* Spring boot;
+* Java 17
+* Spring boot 2.5.2;
 * Thymeleaf;
 * Bootstrap;
 * JDBC;
-* Liquibase;
-* H2 Database;
-* Mockito;
-* Junit;
-* Hamcrest.
+* Liquibase 3.6.2;
+* Postgresql 42.3.6;
+* H2 Database 2.1.214;
+* Mockito 4.6.1;
+* Junit 4.13.2;
+* Hamcrest 1.3;
+* Lombok 1.18.24.
+
+Перед запуском установите:
+- Java 17
+- Apache Maven 3.x
+
+Перейдите в корень проекта через командную строку и выполните команды: 
+- mvn clean install
+- mvn spring-boot:run
+
 
 Вначале пользователь должен зарегистрироваться и авторизоваться:
 ![](img/reg.png)![](img/auth.png)

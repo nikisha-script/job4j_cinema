@@ -1,5 +1,6 @@
 package ru.job4j.cinema.services;
 
+import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Ticket;
@@ -11,15 +12,12 @@ import java.util.Optional;
 
 @Service
 @ThreadSafe
+@RequiredArgsConstructor
 public class TicketService {
 
     private final TicketStore store;
     private final int rows = 10;
     private final int cells = 10;
-
-    public TicketService(TicketStore store) {
-        this.store = store;
-    }
 
     public Optional<Ticket> save(Ticket ticket) {
         return store.save(ticket);

@@ -4,7 +4,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.cinema.filter.PasswordEncoder;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.services.UserService;
 
@@ -16,10 +15,10 @@ import java.util.Optional;
 @ThreadSafe
 public class UserController {
 
-    private final UserService store;
+    private final UserService userService;
 
     public UserController(UserService postService) {
-        this.store = postService;
+        this.userService = postService;
     }
 
     @GetMapping("/loginPage")
@@ -36,8 +35,8 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpServletRequest req) {
-        user.setPassword(PasswordEncoder.passwordOfDef(user.getPassword()));
-        Optional<User> userDb = store.findUser(user);
+        user.setPassword(userService.passwordEncryption(user.getPassword()));
+        Optional<User> userDb = userService.findUser(user);
         if (userDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
         }
@@ -52,8 +51,11 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute User user) {
-        Optional<User> regUser = store.add(user);
+    public String registration(@ModelAttribute User user, HttpServletRequest req) {
+        user.setPassword(userService.passwordEncryption(user.getPassword()));
+        Optional<User> regUser = userService.add(user);
+        HttpSession session = req.getSession();
+        session.setAttribute("user", regUser.get());
         return "redirect:/index";
     }
 

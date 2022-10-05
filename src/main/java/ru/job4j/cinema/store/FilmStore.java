@@ -1,5 +1,6 @@
 package ru.job4j.cinema.store;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @Slf4j
 @Repository
-public class FilmsStore {
+@RequiredArgsConstructor
+public class FilmStore {
 
-    private BasicDataSource pool;
-
-    public FilmsStore(BasicDataSource pool) {
-        this.pool = pool;
-    }
+    private final BasicDataSource pool;
 
     public Film add(Film value) {
 
@@ -44,37 +42,6 @@ public class FilmsStore {
     }
 
 
-    public boolean delete(int id) {
-        boolean res = false;
-        try (Connection connection = pool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "delete from films where id = ?")) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-            res = true;
-        } catch (SQLException e) {
-            log.error("SQLException in delete method", e);
-        }
-        return res;
-    }
-
-
-    public boolean update(Film value) {
-        boolean res = false;
-        try (Connection connection = pool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "update films set name = ?, description = ?, img = ? where id = ?")) {
-            preparedStatement.setString(1, value.getName());
-            preparedStatement.setString(2, value.getDescription());
-            preparedStatement.setBytes(3, value.getImg());
-            preparedStatement.setInt(4, value.getId());
-            preparedStatement.execute();
-            res = true;
-        } catch (SQLException e) {
-            log.error("SQLException in update method", e);
-        }
-        return res;
-    }
 
     public List<Film> findAll() {
         List<Film> result = new ArrayList<>();
