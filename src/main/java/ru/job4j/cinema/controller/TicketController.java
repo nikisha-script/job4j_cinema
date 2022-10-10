@@ -1,5 +1,6 @@
 package ru.job4j.cinema.controller;
 
+import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,20 +19,12 @@ import java.util.Optional;
 
 @Controller
 @ThreadSafe
+@RequiredArgsConstructor
 public class TicketController {
 
     private final TicketService ticketService;
     private final UserService userService;
     private final FilmService filmService;
-
-    public TicketController(TicketService service,
-                            UserService userService,
-                            FilmService filmService) {
-        this.ticketService = service;
-        this.userService = userService;
-        this.filmService = filmService;
-    }
-
 
     @GetMapping("/selectTicket")
     public String buyTicket(@RequestParam("id") Integer id,
@@ -41,10 +34,10 @@ public class TicketController {
                             Model model,
                             HttpSession session) {
         SessionUser.getSession(model, session);
-        User user = userService.findUserByName(username);
+        User user = userService.findUserByName(username).get();
         Ticket ticket = new Ticket(row, cell, user.getId(), id);
         model.addAttribute("ticket", ticket);
-        model.addAttribute("film", filmService.findById(id));
+        model.addAttribute("film", filmService.findById(id).get());
         return "/buyTicket";
     }
 
@@ -57,12 +50,12 @@ public class TicketController {
                       HttpSession session) {
         StringBuilder response = new StringBuilder();
         SessionUser.getSession(model, session);
-        User user = userService.findUserByName(username);
+        User user = userService.findUserByName(username).get();
         Ticket ticket = new Ticket(row, cell, user.getId(), id);
         Optional<Ticket> temp = ticketService.findTicketByRowPosition(ticket.getRow(),
                 ticket.getCell(),
                 ticket.getFilmId());
-        if (temp.get().getId() == 0) {
+        if (temp.isEmpty()) {
             Optional<Ticket> rsl = ticketService.save(ticket);
             if (rsl.isPresent()) {
                 response.append("/successfully");

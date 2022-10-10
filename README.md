@@ -3,43 +3,43 @@
 Данное приложение иллюстрирует покупку билетов в кинотеатр.
 
 Стек технологий: 
-* Java 17
-* Spring boot 2.5.2;
-* Thymeleaf;
-* Bootstrap;
-* JDBC;
-* Liquibase 3.6.2;
-* Postgresql 42.3.6;
-* H2 Database 2.1.214;
-* Mockito 4.6.1;
-* Junit 4.13.2;
-* Hamcrest 1.3;
-* Lombok 1.18.24.
+
+![java](https://img.shields.io/badge/Java-17-red)
+![Spring Boot](https://img.shields.io/badge/Spring-Boot-green)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.0.15-blue)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-style-blue)
+![JDBC](https://img.shields.io/badge/JDBC-DB-yellowgreen)
+![Liquibase](https://img.shields.io/badge/Liquibase-core-red)
+![PostgresSQL](https://img.shields.io/badge/PostgresSQL-42.3.6-brightgreen)
+![H2](https://img.shields.io/badge/H2-Database-yellowgreen)
+![Mockito](https://img.shields.io/badge/Mockito-test-brightgreen)
+![Junit](https://img.shields.io/badge/Junit-test-red)
+![Lombok](https://img.shields.io/badge/Lombok-1.18.24-lightgrey)
 
 Перед запуском установите:
 - Java 17
 - Apache Maven 3.x
 
-Перейдите в корень проекта через командную строку и выполните команды: 
-- mvn clean install
-- mvn spring-boot:run
+## Запуск приложения
 
+1. Создать бд:
+```sql
+    create database cinema;
+```
+2. Запуск приложения с maven. Перейдите в корень проекта через командную строку и выполните команды:
+```
+    mvn clean install
+    mvn spring-boot:run
+```
+### Основная страница со всеми объявлениями и функционалом:
+![](img/nav.png)
+![](img/films.png)
 
-Вначале пользователь должен зарегистрироваться и авторизоваться:
+### Страницы с авторизацией и аутентификацией пользователя:
 ![](img/reg.png)![](img/auth.png)
-<br>
-<br>
-Главная страница:
-![](img/nav.png)![](img/films.png)
-<br>
-<br>
-Далее пользователь может выбрать фильм и перейти к оформлению покупки билета:
+
+
+### Страницы с выбором места и оформлением билета:
 ![](img/view.png)
-<br>
-<br>
-Выбирает удобное место и далее переходит к покупке билета:
 ![](img/buy.png)
 
-Так же может отменить выбранное место.
-
-Если место свободное, то оформление проходит успешно, иначе оповестим пользователя, что место уже занято.

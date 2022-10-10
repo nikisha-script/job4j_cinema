@@ -61,23 +61,29 @@ public class UserStore {
         return res;
     }
 
-    public User findUserByName(String username) {
-        User res = new User();
-        try (Connection connection = pool.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users where username = ?")) {
-            preparedStatement.setString(1, username);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    res.setId(resultSet.getInt("id"));
-                    res.setUsername(resultSet.getString("username"));
-                    res.setEmail(resultSet.getString("email"));
-                    res.setPhone(resultSet.getString("phone"));
-                    res.setPassword(resultSet.getString("password"));
+    public Optional<User> findUserByName(String username) {
+        Optional<User> res = Optional.empty();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users where username = ?")
+        ) {
+            ps.setString(1, username);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    res = Optional.of(createUser(it));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error("SQLException", e);
         }
         return res;
     }
+
+    private User createUser(ResultSet resultSet) throws SQLException {
+        return new User(resultSet.getInt("id"),
+                resultSet.getString("username"),
+                resultSet.getString("email"),
+                resultSet.getString("phone"),
+                resultSet.getString("password"));
+    }
+
 }

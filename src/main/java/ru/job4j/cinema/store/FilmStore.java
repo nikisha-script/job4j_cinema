@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -50,10 +51,7 @@ public class FilmStore {
                 "select * from films");
         ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                result.add(new Film(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getBytes("img")));
+                result.add(createFilm(resultSet));
             }
         } catch (SQLException e) {
             log.error("SQLException in findAll method", e);
@@ -62,23 +60,27 @@ public class FilmStore {
     }
 
 
-    public Film findById(int id) {
-        Film res = null;
+    public Optional<Film> findById(int id) {
+        Optional<Film> res = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM films WHERE id = ?")
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    res = new Film(it.getInt("id"),
-                            it.getString("name"),
-                            it.getString("description"),
-                            it.getBytes("img"));
+                    res = Optional.of(createFilm(it));
                 }
             }
         } catch (Exception e) {
             log.error("SQLException", e);
         }
         return res;
+    }
+
+    private Film createFilm(ResultSet resultSet) throws SQLException {
+        return new Film(resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
+                resultSet.getBytes("img"));
     }
 }

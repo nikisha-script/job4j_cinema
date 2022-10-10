@@ -1,5 +1,6 @@
 package ru.job4j.cinema.controller;
 
+import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -19,15 +20,11 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @ThreadSafe
+@RequiredArgsConstructor
 public class FilmController {
 
-    private FilmService service;
-    private TicketService ticketService;
-
-    public FilmController(FilmService service, TicketService ticketService) {
-        this.service = service;
-        this.ticketService = ticketService;
-    }
+    private final FilmService service;
+    private final TicketService ticketService;
 
     @GetMapping("/index")
     public String index(Model model, HttpSession session) {
@@ -39,7 +36,7 @@ public class FilmController {
     @GetMapping("/session/{id}")
     public String getSession(Model model, @PathVariable("id") Integer id, HttpSession session) {
         SessionUser.getSession(model, session);
-        model.addAttribute("film", service.findById(id));
+        model.addAttribute("film", service.findById(id).get());
         model.addAttribute("rows", ticketService.rowsList());
         model.addAttribute("cells", ticketService.cellsList());
         return "/session";
@@ -54,7 +51,7 @@ public class FilmController {
 
     @GetMapping("/images/{id}")
     public ResponseEntity<Resource> img(@PathVariable("id") Integer id) {
-        Film film = service.findById(id);
+        Film film = service.findById(id).get();
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
                 .contentLength(film.getImg().length)

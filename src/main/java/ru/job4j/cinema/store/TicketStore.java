@@ -54,11 +54,7 @@ public class TicketStore {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    tickets.add(new Ticket(rs.getInt("id"),
-                            rs.getInt("pos_row"),
-                            rs.getInt("cell"),
-                            rs.getInt("user_id"),
-                            rs.getInt("film_id")));
+                    tickets.add(createTicket(rs));
                 }
             }
         } catch (SQLException e) {
@@ -78,10 +74,10 @@ public class TicketStore {
                 if (resultSet.next()) {
                     Ticket temp = new Ticket();
                     temp.setId(resultSet.getInt("id"));
-                    temp.setId(resultSet.getInt("pos_row"));
-                    temp.setId(resultSet.getInt("cell"));
-                    temp.setId(resultSet.getInt("user_id"));
-                    temp.setId(resultSet.getInt("film_id"));
+                    temp.setRow(resultSet.getInt("pos_row"));
+                    temp.setCell(resultSet.getInt("cell"));
+                    temp.setUserId(resultSet.getInt("user_id"));
+                    temp.setFilmId(resultSet.getInt("film_id"));
                     ticket = Optional.of(temp);
                 }
             }
@@ -89,6 +85,14 @@ public class TicketStore {
             log.error("SQLException in method findTicketByRowPosition", e);
         }
         return ticket;
+    }
+
+    private Ticket createTicket(ResultSet resultSet) throws SQLException {
+        return new Ticket(resultSet.getInt("id"),
+                resultSet.getInt("pos_row"),
+                resultSet.getInt("cell"),
+                resultSet.getInt("user_id"),
+                resultSet.getInt("film_id"));
     }
 
 }

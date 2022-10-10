@@ -7,6 +7,7 @@ import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.store.FilmStore;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @ThreadSafe
@@ -23,7 +24,7 @@ public class FilmService {
         store.add(film);
     }
 
-    public Film findById(int id) {
+    public Optional<Film> findById(int id) {
         return store.findById(id);
     }
 
