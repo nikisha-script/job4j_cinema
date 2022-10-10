@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 public class DbConfig {
 
     @Bean
-    public BasicDataSource loadPool (
+    public BasicDataSource loadPool(
             @Value("${jdbc.url}") String url,
             @Value("${jdbc.driver}") String driver,
             @Value("${jdbc.username}") String username,
