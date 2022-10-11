@@ -10,7 +10,7 @@ create table if not exists users (
 );
 
 --changeset nikishin:create_ticket
-create table ticket (
+create table if not exists ticket (
     id serial primary key,
     pos_row INT NOT NULL,
     cell INT NOT NULL,
