@@ -9,6 +9,14 @@ create table if not exists users (
     password VARCHAR NOT NULL
 );
 
+--changeset nikishin:create_films
+create table if not exists films (
+    id serial primary key,
+    name varchar,
+    description varchar,
+    img bytea
+);
+
 --changeset nikishin:create_ticket
 create table if not exists ticket (
     id serial primary key,
