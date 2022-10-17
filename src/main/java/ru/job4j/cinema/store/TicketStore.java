@@ -25,8 +25,8 @@ public class TicketStore {
     public Optional<Ticket> save(Ticket ticket) {
         Optional<Ticket> rsl = Optional.empty();
         try (Connection connection = pool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) " +
-                             "values (?, ?, ?, ?)",
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) "
+                             + "values (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setInt(1, ticket.getRow());
                 preparedStatement.setInt(2, ticket.getUserId());
