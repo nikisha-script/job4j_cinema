@@ -7,6 +7,7 @@ import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.store.TicketStore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -37,11 +38,11 @@ public class TicketService {
     }
 
     public List<Integer> rowList() {
-        return new ArrayList<>(rowNumbers);
+        return Collections.unmodifiableList(rowNumbers);
     }
 
     public List<Integer> cellList() {
-        return new ArrayList<>(cellNumbers);
+        return Collections.unmodifiableList(cellNumbers);
     }
 
 }
