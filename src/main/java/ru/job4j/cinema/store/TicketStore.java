@@ -11,8 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,7 +25,8 @@ public class TicketStore {
     public Optional<Ticket> save(Ticket ticket) {
         Optional<Ticket> rsl = Optional.empty();
         try (Connection connection = pool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) values (?, ?, ?, ?)",
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into ticket(pos_row, user_id, film_id, cell) " +
+                             "values (?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setInt(1, ticket.getRow());
                 preparedStatement.setInt(2, ticket.getUserId());
@@ -47,22 +46,6 @@ public class TicketStore {
         return rsl;
     }
 
-    public List<Ticket> findTicketsByUserId(int id) {
-        List<Ticket> tickets = new ArrayList<>();
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("select * from ticket where user_id = ?")) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    tickets.add(createTicket(rs));
-                }
-            }
-        } catch (SQLException e) {
-            log.error("SQLException in method findTicketsByUserId", e);
-        }
-        return tickets;
-    }
-
     public Optional<Ticket> findTicketByRowPosition(int row, int cell, int filmId) {
         Optional<Ticket> ticket = Optional.empty();
         try (Connection connection = pool.getConnection();
@@ -72,13 +55,7 @@ public class TicketStore {
             preparedStatement.setInt(3, filmId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Ticket temp = new Ticket();
-                    temp.setId(resultSet.getInt("id"));
-                    temp.setRow(resultSet.getInt("pos_row"));
-                    temp.setCell(resultSet.getInt("cell"));
-                    temp.setUserId(resultSet.getInt("user_id"));
-                    temp.setFilmId(resultSet.getInt("film_id"));
-                    ticket = Optional.of(temp);
+                    ticket = Optional.of(createTicket(resultSet));
                 }
             }
         } catch (SQLException e) {

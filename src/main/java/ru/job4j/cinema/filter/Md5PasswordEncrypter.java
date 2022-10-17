@@ -1,34 +1,13 @@
-package ru.job4j.cinema.services;
+package ru.job4j.cinema.filter;
 
-import lombok.RequiredArgsConstructor;
-import net.jcip.annotations.ThreadSafe;
-import org.springframework.stereotype.Service;
-import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.store.UserStore;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
-@Service
-@ThreadSafe
-@RequiredArgsConstructor
-public class UserService {
-
-    private final UserStore store;
-
-    public Optional<User> add(User user) {
-        return store.add(user);
-    }
-
-    public Optional<User> findUser(User user) {
-        return store.findUser(user);
-    }
-
-    public Optional<User> findUserByName(String username) {
-        return store.findUserByName(username);
-    }
+@Component
+public class Md5PasswordEncrypter {
 
     public String passwordEncryption(String pass) {
         MessageDigest messageDigest;
@@ -51,4 +30,5 @@ public class UserService {
         }
         return m5dHex.toString();
     }
+
 }

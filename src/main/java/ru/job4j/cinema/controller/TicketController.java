@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.services.FilmService;
-import ru.job4j.cinema.services.TicketService;
-import ru.job4j.cinema.services.UserService;
+import ru.job4j.cinema.service.FilmService;
+import ru.job4j.cinema.service.TicketService;
+import ru.job4j.cinema.service.UserService;
 import ru.job4j.cinema.utils.SessionUser;
 
 import javax.servlet.http.HttpSession;

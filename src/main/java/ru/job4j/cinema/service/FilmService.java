@@ -1,4 +1,4 @@
-package ru.job4j.cinema.services;
+package ru.job4j.cinema.service;
 
 import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;

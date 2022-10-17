@@ -44,15 +44,15 @@ public class UserStore {
         return res;
     }
 
-    public Optional<User> findUser(User user) {
+    public Optional<User> findUserByUsernameAndPassword(String username, String password) {
         Optional<User> res = Optional.empty();
         try (Connection connection = pool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users where username = ? and password = ?")) {
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    res = Optional.of(user);
+                    res = Optional.of(createUser(resultSet));
                 }
             }
         } catch (SQLException e) {
