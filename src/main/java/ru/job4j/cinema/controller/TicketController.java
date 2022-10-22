@@ -39,7 +39,7 @@ public class TicketController {
         SessionUser.getSession(model, session);
         Optional<User> user = userService.findUserByName(username);
         Optional<Film> film = filmService.findById(id);
-        if(user.isEmpty() || film.isEmpty()) {
+        if (user.isEmpty() || film.isEmpty()) {
             return "/404";
         }
         Ticket ticket = new Ticket(row, cell, user.get().getId(), id);
