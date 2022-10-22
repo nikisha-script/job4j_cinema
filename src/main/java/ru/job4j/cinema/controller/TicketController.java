@@ -2,11 +2,14 @@ package ru.job4j.cinema.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.service.FilmService;
@@ -34,10 +37,14 @@ public class TicketController {
                             Model model,
                             HttpSession session) {
         SessionUser.getSession(model, session);
-        User user = userService.findUserByName(username).get();
-        Ticket ticket = new Ticket(row, cell, user.getId(), id);
+        Optional<User> user = userService.findUserByName(username);
+        Optional<Film> film = filmService.findById(id);
+        if(user.isEmpty() || film.isEmpty()) {
+            return "/404";
+        }
+        Ticket ticket = new Ticket(row, cell, user.get().getId(), id);
         model.addAttribute("ticket", ticket);
-        model.addAttribute("film", filmService.findById(id).get());
+        model.addAttribute("film", film.get());
         return "/buyTicket";
     }
 
@@ -50,7 +57,9 @@ public class TicketController {
                       HttpSession session) {
         StringBuilder response = new StringBuilder();
         SessionUser.getSession(model, session);
-        User user = userService.findUserByName(username).get();
+        User user = userService.findUserByName(username).orElseThrow(() -> {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not found");
+        });
         Ticket ticket = new Ticket(row, cell, user.getId(), id);
         Optional<Ticket> temp = ticketService.findTicketByRowPosition(ticket.getRow(),
                 ticket.getCell(),
