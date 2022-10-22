@@ -44,3 +44,9 @@
 ![](img/view.png)
 ![](img/buy.png)
 
+### Контакты:
+
+email: danya.nikisha@mail.ru
+
+
+
