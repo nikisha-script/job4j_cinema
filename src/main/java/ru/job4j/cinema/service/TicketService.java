@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.store.TicketStore;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -37,11 +36,11 @@ public class TicketService {
     }
 
     public List<Integer> rowList() {
-        return Collections.unmodifiableList(rowNumbers);
+        return rowNumbers;
     }
 
     public List<Integer> cellList() {
-        return Collections.unmodifiableList(cellNumbers);
+        return cellNumbers;
     }
 
 }

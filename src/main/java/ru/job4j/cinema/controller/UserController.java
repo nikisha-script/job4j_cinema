@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.job4j.cinema.filter.Md5PasswordEncrypter;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.service.UserService;
 
@@ -19,7 +21,6 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final Md5PasswordEncrypter encrypter;
 
     @GetMapping("/loginPage")
     public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
@@ -35,7 +36,6 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpServletRequest req) {
-        user.setPassword(encrypter.passwordEncryption(user.getPassword()));
         Optional<User> userDb = userService.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
         if (userDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
@@ -45,15 +45,17 @@ public class UserController {
         return "redirect:/index";
     }
 
-    @GetMapping("/reg")
+    @GetMapping("/registration")
     public String getReg() {
-        return "reg";
+        return "registration";
     }
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute User user, HttpServletRequest req) {
-        user.setPassword(encrypter.passwordEncryption(user.getPassword()));
         Optional<User> regUser = userService.add(user);
+        if (regUser.isEmpty()) {
+            return "redirect:/loginPage?fail=true";
+        }
         HttpSession session = req.getSession();
         session.setAttribute("user", regUser.get());
         return "redirect:/index";
